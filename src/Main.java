@@ -1,4 +1,3 @@
-import repository.querys.TableCreationQuery;
 import view.TicketBookingApplication;
 
 public class Main {
