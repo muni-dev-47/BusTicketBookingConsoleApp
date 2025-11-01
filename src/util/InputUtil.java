@@ -378,11 +378,13 @@ public class InputUtil {
             return InputUtil.readValidatedInput(prompt, RegistrationFormValidator::isValidName, errorMessage);
         }
 
-        public static double readRouteDistance() {
+        public static double readStopDistanceFromOrigin() {
 
-            String prompt = "📏 Enter Route Distance (in Kilometers, e.g., 450.5)";
-            Predicate<Double> validator = distance -> distance >= 50.0 && distance < 5000.0;
-            String errorMessage = "❌ Invalid Distance. Distance must be a positive number greater than 50 km and less than 5000 km.";
+            String prompt = ("📏 Enter Stop Distance from Origin (in Km).");
+
+            Predicate<Double> validator = distance -> distance > 0.0 && distance < Double.MAX_VALUE;
+
+            String errorMessage = ("❌ Invalid Stop Distance. Distance must be greater than 0 km and + lessthen" + Double.MAX_VALUE);
 
             return InputUtil.readValidatedDouble(prompt, validator, errorMessage);
         }
@@ -486,14 +488,16 @@ public class InputUtil {
             int currentStopOrder = 1;
             String continueInput = "Y";
 
-            System.out.println("\n--- 📍 Defining STARTING Point (Order " + currentStopOrder + ") ---");
-            System.out.println("City: " + routeOrigin);
+            {
+                System.out.println("\n--- 📍 Defining STARTING Point (Order " + currentStopOrder + ") ---");
+                System.out.println("City: " + routeOrigin);
 
-            String originLocation = readStopLocation(routeOrigin);
+                String originLocation = readStopLocation(routeOrigin);
 
-            RouteStop originStop = new RouteStop(routeId, routeOrigin, originLocation, currentStopOrder);
-            allRouteStops.add(originStop);
-            System.out.println("✅ Origin Stop " + routeOrigin + " added (Location: " + originLocation + ")");
+                RouteStop originStop = new RouteStop(routeId, routeOrigin, originLocation, currentStopOrder, 0);
+                allRouteStops.add(originStop);
+                System.out.println("✅ Origin Stop " + routeOrigin + " added (Location: " + originLocation + ")");
+            }
 
             currentStopOrder++;
 
@@ -506,13 +510,13 @@ public class InputUtil {
 
                 String cityName = readRouteStopCity();
                 String stopLocation = readStopLocation(cityName);
-
+                double distanceFromOriginKm = readStopDistanceFromOrigin();
                 if (cityName.equalsIgnoreCase(routeOrigin) || cityName.equalsIgnoreCase(routeDestination)) {
                     System.out.println("⚠️ Warning: Origin (" + routeOrigin + ") or Destination (" + routeDestination + ") cannot be added as an intermediate stop. Skipping.");
                     continue;
                 }
 
-                RouteStop stop = new RouteStop(routeId, cityName, stopLocation, currentStopOrder);
+                RouteStop stop = new RouteStop(routeId, cityName, stopLocation, currentStopOrder, distanceFromOriginKm);
                 allRouteStops.add(stop);
 
                 System.out.println("✅ Stop " + cityName + " added (Location: " + stopLocation + ") with Order " + currentStopOrder);
@@ -526,8 +530,8 @@ public class InputUtil {
             System.out.println("City: " + routeDestination);
 
             String destinationLocation = readStopLocation(routeDestination);
-
-            RouteStop destinationStop = new RouteStop(routeId, routeDestination, destinationLocation, currentStopOrder);
+            double distanceFromOriginKm = readStopDistanceFromOrigin();
+            RouteStop destinationStop = new RouteStop(routeId, routeDestination, destinationLocation, currentStopOrder, distanceFromOriginKm);
             allRouteStops.add(destinationStop);
             System.out.println("✅ Destination Stop " + routeDestination + " added (Location: " + destinationLocation + ")");
 
@@ -551,6 +555,14 @@ public class InputUtil {
             }, errorMessage);
 
             return LocalDate.parse(dateStr, DATE_FORMATTER);
+        }
+
+        public static double getTotalDistance(List<RouteStop> routeStops) {
+            double totalDistance = 0;
+            for (RouteStop routeStop : routeStops) {
+                totalDistance += routeStop.getDistanceFromOriginKm();
+            }
+            return totalDistance;
         }
     }
 

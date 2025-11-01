@@ -32,6 +32,14 @@ public class Bus {
         this.userId = userId;
     }
 
+    public double getMinTurnaroundTimeHours() {
+        return minTurnaroundTimeHours;
+    }
+
+    public void setMinTurnaroundTimeHours(double minTurnaroundTimeHours) {
+        this.minTurnaroundTimeHours = minTurnaroundTimeHours;
+    }
+
     public long getBusId() {
         return busId;
     }

@@ -1,7 +1,7 @@
 package view.owner;
 
 import config.ServiceLocator;
-import controllers.ownercontrollers.BusRegistrationController;
+import controllers.ownercontrollers.BusController;
 import models.Bus;
 import models.Seat;
 import util.InputUtil;
@@ -29,7 +29,7 @@ public class AddBusView implements View {
     public void view() {
         try {
             String busNo = InputUtil.BusFormInputUtil.readRegistrationNumber();
-            if (!BusRegistrationController.isBusNumberAvailable(busNo)) {
+            if (!BusController.isBusNumberAvailable(busNo)) {
                 System.out.println("❌ Error: This Bus Registration Number (" + busNo + ") is already registered in our system. \n" + "Each bus must have a unique RC Number. \n" + "Please verify the number or contact support if you believe this is an error.");
                 return;
             }
@@ -41,7 +41,7 @@ public class AddBusView implements View {
             int totalSeats = seats.size();
             long userId = Long.parseLong(PropertyFileHandler.getProperty("userId"));
             long busId;
-            if ((busId = BusRegistrationController.handleRegisterNewBus(new Bus(amenities, busType, busName, busNo, totalSeats, userId, minTurnaroundTimeHours), seats)) != 0) {
+            if ((busId = BusController.handleRegisterNewBus(new Bus(amenities, busType, busName, busNo, totalSeats, userId, minTurnaroundTimeHours), seats)) != 0) {
                 System.out.println("\n=======================================================");
                 System.out.println("🎉 SUCCESS! NEW BUS REGISTERED!");
                 System.out.println("🚌 Registered Bus ID: " + busId);

@@ -4,18 +4,19 @@ import config.ServiceLocator;
 import models.Bus;
 import models.Seat;
 import repository.ownerRepo.BusRepository;
+
 import java.sql.SQLException;
 import java.util.List;
 
-public class BusRegistrationService {
-    private static BusRegistrationService brs;
+public class BusService {
+    private static BusService brs;
     private static final BusRepository br = ServiceLocator.getInstance().gerBusRepo();
 
-    private BusRegistrationService() {
+    private BusService() {
     }
 
-    public static BusRegistrationService getInstance() {
-        if (brs == null) brs = new BusRegistrationService();
+    public static BusService getInstance() {
+        if (brs == null) brs = new BusService();
         return brs;
     }
 
@@ -32,4 +33,7 @@ public class BusRegistrationService {
         return id;
     }
 
+    public Bus getBus(long busId) throws SQLException {
+        return br.findBusByBudId(busId);
+    }
 }

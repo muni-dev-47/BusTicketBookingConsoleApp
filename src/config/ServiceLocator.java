@@ -4,7 +4,7 @@ import repository.ownerRepo.BusRepository;
 import repository.ownerRepo.BusScheduleRepository;
 import repository.passengerRepo.AuthRepository;
 import services.AdminServices.AdminService;
-import services.ownerServices.BusRegistrationService;
+import services.ownerServices.BusService;
 import services.ownerServices.BusScheduleService;
 import services.ownerServices.OwnerService;
 import services.passengerServices.PassengerService;
@@ -40,7 +40,7 @@ public class ServiceLocator {
     private final TripAndScheduleManagementView tripAndScheduleManagementView;
     private final AddBusView addbusview;
     private final BusRepository br;
-    private final BusRegistrationService brs;
+    private final BusService brs;
     private final AddSeatView asv;
     private final BusScheduleService busScheduleService;
     private final BusScheduleRepository busScheduleRepository;
@@ -66,7 +66,7 @@ public class ServiceLocator {
         this.tripAndScheduleManagementView = TripAndScheduleManagementView.getInstance();
         this.addbusview = AddBusView.getInstance();
         this.br = BusRepository.getInstance();
-        this.brs = BusRegistrationService.getInstance();
+        this.brs = BusService.getInstance();
         this.asv = AddSeatView.getInstance();
         this.busScheduleService = BusScheduleService.getInstance();
         this.busScheduleRepository = BusScheduleRepository.getInstance();
@@ -148,7 +148,7 @@ public class ServiceLocator {
         return br;
     }
 
-    public BusRegistrationService getBusRegistrationService() {
+    public BusService getBusRegistrationService() {
         return brs;
     }
 

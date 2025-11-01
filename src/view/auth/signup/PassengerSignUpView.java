@@ -42,6 +42,5 @@ public class PassengerSignUpView implements SignUp {
         } catch (NoSuchAlgorithmException | InvalidKeySpecException | SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 }

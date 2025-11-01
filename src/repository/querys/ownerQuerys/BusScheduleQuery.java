@@ -5,8 +5,8 @@ public enum BusScheduleQuery {
     INSERT_NEW_ROUTE("INSERT INTO Route (routeName, originCity, destinationCity, basePrice, userId) VALUES (?, ?, ?, ?, ?, ?) RETURNING routeId;"),
     DELETE_ROUTE_BY_ID("DELETE FROM ROUTE WHERE ROUTEID = ?"),
     DELETE_ROUTE_STOP_BY_ROUTE_ID("DELETE FROM ROUTESTOP WHERE ROUTEID = ?"),
-    INSERT_ROUTE_STOP("INSERT INTO routeStop (routeId , stopCity , stopLocation , stopOrder) VALUES (?,?,?,?)"),
-    INSERT_TRIP_SCHEDULE("INSERT INTO TRIP (driverId , routeId , busId , tripDate , departureTime , arrivalTime , baseFare )");
+    INSERT_ROUTE_STOP("INSERT INTO routeStop (routeId , stopCity , stopLocation , stopOrder , distanceFromOriginKm ) VALUES (?,?,?,?,?)");
+//    INSERT_TRIP_SCHEDULE("INSERT INTO TRIP (driverId , routeId , busId , tripDate , departureTime , arrivalTime , baseFare )");
     private final String query;
 
     BusScheduleQuery(String query) {

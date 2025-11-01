@@ -46,8 +46,8 @@ public class BusScheduleService {
         return true;
     }
 
-    public long handleAddNewTripSchedule(Trip trip) throws SQLException {
-        return busScheduleRepository.saveTripSchedule(trip);
-    }
+//    public long handleAddNewTripSchedule(Trip trip) throws SQLException {
+//        return busScheduleRepository.saveTripSchedule(trip);
+//    }
 
 }

@@ -1,6 +1,8 @@
 package view.owner;
 
+import controllers.ownercontrollers.BusController;
 import controllers.ownercontrollers.BusScheduleController;
+import models.Bus;
 import models.Route;
 import models.RouteStop;
 import util.InputUtil;
@@ -8,7 +10,6 @@ import util.PropertyFileHandler;
 import view.View;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -33,7 +34,6 @@ public class AddScheduleView implements View {
             return;
         }
         String routeName = InputUtil.ScheduleFormInputUtil.readRouteName();
-        double distanceKm = InputUtil.ScheduleFormInputUtil.readRouteDistance();
         double basePrice = InputUtil.ScheduleFormInputUtil.readRouteBasePrice();
         long routeId;
         try {
@@ -47,9 +47,11 @@ public class AddScheduleView implements View {
                 }
                 long driverId = InputUtil.ScheduleFormInputUtil.readDriverId();
                 long busId = InputUtil.ScheduleFormInputUtil.readBusId();
+                Bus bus = BusController.getbus(busId);
+                double totalDistance = InputUtil.ScheduleFormInputUtil.getTotalDistance(routeStops);
                 LocalTime startingTime = InputUtil.ScheduleFormInputUtil.readTripTime("Starting", originCity);
-                LocalTime endingTime = InputUtil.ScheduleFormInputUtil.readTripEndTime(startingTime, distanceKm, destinationCity);
-                LocalDate tripDate = InputUtil.ScheduleFormInputUtil.readValidDateYYYYMMDD("Trip Start");
+                LocalTime endingTime = InputUtil.ScheduleFormInputUtil.readTripEndTime(startingTime, totalDistance, destinationCity);
+                double minTurnaroundTimeHours = bus.getMinTurnaroundTimeHours();
 
             }
         } catch (SQLException e) {

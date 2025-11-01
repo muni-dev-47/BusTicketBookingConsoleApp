@@ -1,6 +1,6 @@
 package models;
 
-public class User {
+public abstract class User {
     private long userId;
     private String userName;
     private String password;

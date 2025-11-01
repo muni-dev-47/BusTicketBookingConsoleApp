@@ -32,7 +32,7 @@ public class BusScheduleController {
         return busScheduleService.handleAddNewStops(routeStops);
     }
 
-    public static long handleAddNewTripSchedule(Trip trip) throws SQLException {
-        return busScheduleService.handleAddNewTripSchedule(trip);
-    }
+//    public static long handleAddNewTripSchedule(Trip trip) throws SQLException {
+//        return busScheduleService.handleAddNewTripSchedule(trip);
+//    }
 }

@@ -50,10 +50,10 @@ public class BusScheduleRepository {
     }
 
     public long saveRouteStop(RouteStop routeStop) throws SQLException {
-        return DBQueryExecutorUtil.executeInsertAndReturnKey(BusScheduleQuery.INSERT_ROUTE_STOP.getQuery(), new ArrayList<>(Arrays.asList(routeStop.getRouteId(), routeStop.getStopCity(), routeStop.getStopLocation(), routeStop.getStopOrder())));
+        return DBQueryExecutorUtil.executeInsertAndReturnKey(BusScheduleQuery.INSERT_ROUTE_STOP.getQuery(), new ArrayList<>(Arrays.asList(routeStop.getRouteId(), routeStop.getStopCity(), routeStop.getStopLocation(), routeStop.getStopOrder(), routeStop.getDistanceFromOriginKm())));
     }
 
-    public long saveTripSchedule(Trip trip) throws SQLException {
-        return DBQueryExecutorUtil.executeInsertAndReturnKey(BusScheduleQuery.INSERT_TRIP_SCHEDULE.getQuery(), new ArrayList<>(Arrays.asList(trip.getDriverId(), trip.getRouteId(), trip.getBusId(), trip.getTripDate(), trip.getDepartureTime(), trip.getArrivalTime(), trip.getBaseFare())));
-    }
+//    public long saveTripSchedule(Trip trip) throws SQLException {
+//        return DBQueryExecutorUtil.executeInsertAndReturnKey(BusScheduleQuery.INSERT_TRIP_SCHEDULE.getQuery(), new ArrayList<>(Arrays.asList(trip.getDriverId(), trip.getRouteId(), trip.getBusId(), trip.getTripDate(), trip.getDepartureTime(), trip.getArrivalTime(), trip.getBaseFare())));
+//    }
 }
