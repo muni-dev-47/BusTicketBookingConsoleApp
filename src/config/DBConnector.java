@@ -46,6 +46,7 @@ public class DBConnector {
             st.executeUpdate(TableCreationQuery.CREATE_BOOKING_TABLE.getQuery());
             st.executeUpdate(TableCreationQuery.CREATE_CANCELLATION_TABLE.getQuery());
             st.executeUpdate(TableCreationQuery.CREATE_REPORT_TABLE.getQuery());
+            st.executeUpdate(TableCreationQuery.CREATE_SCHEDULE_TABLE.getQuery());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

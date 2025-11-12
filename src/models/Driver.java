@@ -30,6 +30,11 @@ public class Driver {
         this.dateOfJoining = dateOfJoining;
     }
 
+    public Driver(int driverId, String fullName) {
+        this.driverId = driverId;
+        this.fullName = fullName;
+    }
+
     public int getDriverId() {
         return driverId;
     }

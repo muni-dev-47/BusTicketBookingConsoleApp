@@ -5,12 +5,12 @@ import config.ServiceLocator;
 import java.sql.*;
 import java.util.List;
 
-public class DBQueryExecutorUtil {
+public final class DBQueryExecutorUtil {
     private DBQueryExecutorUtil() {
 
     }
 
-    private static void setParameters(PreparedStatement statement, List<Object> params) throws SQLException {
+    private synchronized static void setParameters(PreparedStatement statement, List<Object> params) throws SQLException {
         if (params == null) return;
 
         for (int i = 0; i < params.size(); i++) {
@@ -31,7 +31,7 @@ public class DBQueryExecutorUtil {
         }
     }
 
-    public static int executeUpdateQuery(String sqlQuery, List<Object> params) throws SQLException {
+    public synchronized static int executeUpdateQuery(String sqlQuery, List<Object> params) throws SQLException {
         try (PreparedStatement preparedStatement = ServiceLocator.getInstance().getConnection().prepareStatement(sqlQuery)) {
 
             setParameters(preparedStatement, params);
@@ -43,7 +43,7 @@ public class DBQueryExecutorUtil {
         }
     }
 
-    public static ResultSet executeQueryWithResultSet(String sqlQuery, List<Object> params) throws SQLException {
+    public synchronized static ResultSet executeQueryWithResultSet(String sqlQuery, List<Object> params) throws SQLException {
 
         PreparedStatement preparedStatement = ServiceLocator.getInstance().getConnection().prepareStatement(sqlQuery);
         try {
@@ -62,7 +62,7 @@ public class DBQueryExecutorUtil {
     }
 
 
-    public static long executeInsertAndReturnKey(String sqlQuery, List<Object> params) throws SQLException {
+    public synchronized static long executeInsertAndReturnKey(String sqlQuery, List<Object> params) throws SQLException {
 
         try (PreparedStatement preparedStatement = ServiceLocator.getInstance().getConnection().prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS)) {
 

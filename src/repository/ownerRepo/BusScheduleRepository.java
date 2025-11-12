@@ -2,15 +2,13 @@ package repository.ownerRepo;
 
 import models.Route;
 import models.RouteStop;
-import models.Trip;
+import models.Schedule;
 import repository.querys.ownerQuerys.BusScheduleQuery;
 import util.DBQueryExecutorUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 
 public class BusScheduleRepository {
 
@@ -25,16 +23,10 @@ public class BusScheduleRepository {
         return bsr;
     }
 
-    public boolean findByOriginCityAndDestinationCity(long ownerId, String originCity, String destinationCity) {
-        try {
-            ResultSet rs = DBQueryExecutorUtil.executeQueryWithResultSet(BusScheduleQuery.FIND_BY_USER_ID_AND_ORIGIN_CITY_AND_DESTINATION_CITY.getQuery(), new ArrayList<>(Arrays.asList(ownerId, originCity, destinationCity)));
-            while (rs.next()) {
-                return true;
-            }
-        } catch (SQLException se) {
-            System.out.println(se);
-        }
-        return false;
+    public boolean findByOriginCityAndDestinationCity(long ownerId, String originCity, String destinationCity) throws SQLException {
+
+        ResultSet rs = DBQueryExecutorUtil.executeQueryWithResultSet(BusScheduleQuery.FIND_BY_USER_ID_AND_ORIGIN_CITY_AND_DESTINATION_CITY.getQuery(), new ArrayList<>(Arrays.asList(ownerId, originCity, destinationCity)));
+        return rs.next();
     }
 
     public long saveNewRoute(Route route) throws SQLException {
@@ -51,6 +43,21 @@ public class BusScheduleRepository {
 
     public long saveRouteStop(RouteStop routeStop) throws SQLException {
         return DBQueryExecutorUtil.executeInsertAndReturnKey(BusScheduleQuery.INSERT_ROUTE_STOP.getQuery(), new ArrayList<>(Arrays.asList(routeStop.getRouteId(), routeStop.getStopCity(), routeStop.getStopLocation(), routeStop.getStopOrder(), routeStop.getDistanceFromOriginKm())));
+    }
+
+    public boolean findBusById(long busId) throws SQLException {
+        ResultSet rs = DBQueryExecutorUtil.executeQueryWithResultSet(BusScheduleQuery.FIND_BUD_BY_ID.getQuery(), new ArrayList<>(List.of(busId)));
+        return rs.next();
+    }
+
+    public boolean findDriverById(long driverId) throws SQLException {
+        ResultSet rs = DBQueryExecutorUtil.executeQueryWithResultSet(BusScheduleQuery.FIND_DRIVER_BY_ID.getQuery(), new ArrayList<>(List.of(driverId)));
+        return rs.next();
+    }
+
+    public long saveNewSchedule(Schedule schedule) throws SQLException {
+        List<Object> params = List.of(schedule.getBusId(), schedule.getDriverId(), schedule.getRouteId(), schedule.getStartingTime(), schedule.getEndingTime(), schedule.getTotalTravelTime(), schedule.getTotalDistanceKm(), schedule.getRestTimeMinutes(), schedule.getDay());
+        return DBQueryExecutorUtil.executeInsertAndReturnKey(BusScheduleQuery.INSERT_NEW_SCHEDULE.getQuery(), params);
     }
 
 //    public long saveTripSchedule(Trip trip) throws SQLException {

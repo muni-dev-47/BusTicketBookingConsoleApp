@@ -2,10 +2,12 @@ package config;
 
 import repository.ownerRepo.BusRepository;
 import repository.ownerRepo.BusScheduleRepository;
+import repository.ownerRepo.DriverRepository;
 import repository.passengerRepo.AuthRepository;
 import services.AdminServices.AdminService;
 import services.ownerServices.BusService;
 import services.ownerServices.BusScheduleService;
+import services.ownerServices.DriverService;
 import services.ownerServices.OwnerService;
 import services.passengerServices.PassengerService;
 import view.auth.AuthView;
@@ -22,55 +24,71 @@ public class ServiceLocator {
 
     private static ServiceLocator instance;
 
-    private final AdminService as;
-    private final OwnerService os;
-    private final PassengerService ps;
-    private final Connection connection;
-    private final AuthView av;
-    private final AuthRepository pr;
-    private final repository.ownerRepo.AuthRepository or;
-    private final PassengerView pv;
-    private final PassengerSignUpView psv;
-    private final PassengerLoginView plv;
-    private final OwnerLoginView olv;
-    private final OwnerSignUpView osv;
-    private final OwnerView ov;
-    private final BookingAndRevenueMonitoryView booking;
+    // service
+    private final DriverService driverService;
+    private final BusScheduleService busScheduleService;
+    private final AdminService adminService;
+    private final OwnerService ownerService;
+    private final PassengerService passengerService;
+
+    //view
+    private final AuthView authView;
+    private final PassengerSignUpView passengerSignUpView;
+    private final PassengerLoginView passengerLoginView;
+    private final OwnerLoginView ownerLoginView;
+    private final PassengerView passengerView;
+    private final OwnerSignUpView ownerSignUpView;
+    private final OwnerView ownerView;
     private final BusAndInventoryManagementView busAndInventoryView;
     private final TripAndScheduleManagementView tripAndScheduleManagementView;
     private final AddBusView addbusview;
-    private final BusRepository br;
-    private final BusService brs;
-    private final AddSeatView asv;
-    private final BusScheduleService busScheduleService;
-    private final BusScheduleRepository busScheduleRepository;
+    private final AddSeatView addSeatView;
     private final AddScheduleView addScheduleView;
+    private final DriverView driverView;
+    private final BusListView busListView;
+    private final DriverListView driverListView;
+    //repo
+    private final AuthRepository passengerRepo;
+    private final repository.ownerRepo.AuthRepository ownerRepo;
+    private final BookingAndRevenueMonitoryView booking;
+    private final BusRepository busRepository;
+    private final BusService busService;
+    private final BusScheduleRepository busScheduleRepository;
+    private final DriverRepository driverRepository;
+
+    //db
+    private final Connection connection;
 
     private ServiceLocator() {
 
-        this.as = AdminService.getInstance();
-        this.os = OwnerService.getInstance();
-        this.pr = AuthRepository.getInstance();
-        this.ps = PassengerService.getInstance();
+        this.adminService = AdminService.getInstance();
+        this.ownerService = OwnerService.getInstance();
+        this.passengerRepo = AuthRepository.getInstance();
+        this.passengerService = PassengerService.getInstance();
         this.connection = DBConnector.getConnection();
-        this.av = AuthView.getInstance();
-        this.or = repository.ownerRepo.AuthRepository.getInstance();
-        this.pv = PassengerView.getInstance();
-        this.psv = PassengerSignUpView.getInstance();
-        this.plv = PassengerLoginView.getInstance();
-        this.osv = OwnerSignUpView.getInstance();
-        this.olv = OwnerLoginView.getInstance();
-        this.ov = OwnerView.getInstance();
+        this.authView = AuthView.getInstance();
+        this.ownerRepo = repository.ownerRepo.AuthRepository.getInstance();
+        this.passengerView = PassengerView.getInstance();
+        this.passengerSignUpView = PassengerSignUpView.getInstance();
+        this.passengerLoginView = PassengerLoginView.getInstance();
+        this.ownerSignUpView = OwnerSignUpView.getInstance();
+        this.ownerLoginView = OwnerLoginView.getInstance();
+        this.ownerView = OwnerView.getInstance();
         this.booking = BookingAndRevenueMonitoryView.getInstance();
         this.busAndInventoryView = BusAndInventoryManagementView.getInstance();
         this.tripAndScheduleManagementView = TripAndScheduleManagementView.getInstance();
         this.addbusview = AddBusView.getInstance();
-        this.br = BusRepository.getInstance();
-        this.brs = BusService.getInstance();
-        this.asv = AddSeatView.getInstance();
+        this.busRepository = BusRepository.getInstance();
+        this.busService = BusService.getInstance();
+        this.addSeatView = AddSeatView.getInstance();
         this.busScheduleService = BusScheduleService.getInstance();
         this.busScheduleRepository = BusScheduleRepository.getInstance();
         this.addScheduleView = AddScheduleView.getInstance();
+        this.driverRepository = DriverRepository.getInstance();
+        this.driverService = DriverService.getInstance();
+        this.driverView = DriverView.getInstance();
+        this.busListView = BusListView.getInstance();
+        this.driverListView = DriverListView.getInstance();
     }
 
     public static ServiceLocator getInstance() {
@@ -80,8 +98,16 @@ public class ServiceLocator {
         return instance;
     }
 
+    public DriverRepository getDriverRepository() {
+        return driverRepository;
+    }
+
+    public DriverService getDriverService() {
+        return driverService;
+    }
+
     public PassengerService getPassengerService() {
-        return ps;
+        return passengerService;
     }
 
     public Connection getConnection() {
@@ -89,47 +115,47 @@ public class ServiceLocator {
     }
 
     public AuthView getAuthView() {
-        return av;
+        return authView;
     }
 
     public AdminService getAdminService() {
-        return as;
+        return adminService;
     }
 
     public OwnerService getOwnerService() {
-        return os;
+        return ownerService;
     }
 
     public AuthRepository getPassengerAuthRepo() {
-        return pr;
+        return passengerRepo;
     }
 
     public repository.ownerRepo.AuthRepository getOwnerRepo() {
-        return or;
+        return ownerRepo;
     }
 
     public PassengerView getPassengerView() {
-        return pv;
+        return passengerView;
     }
 
     public PassengerSignUpView getPassengerSignUpView() {
-        return psv;
+        return passengerSignUpView;
     }
 
     public PassengerLoginView getPassengerLoginView() {
-        return plv;
+        return passengerLoginView;
     }
 
     public OwnerSignUpView getOwnerSignUpView() {
-        return osv;
+        return ownerSignUpView;
     }
 
     public OwnerLoginView getOwnerLoginView() {
-        return olv;
+        return ownerLoginView;
     }
 
     public OwnerView getOwnerView() {
-        return ov;
+        return ownerView;
     }
 
     public BookingAndRevenueMonitoryView getBookingView() {
@@ -145,15 +171,15 @@ public class ServiceLocator {
     }
 
     public BusRepository gerBusRepo() {
-        return br;
+        return busRepository;
     }
 
     public BusService getBusRegistrationService() {
-        return brs;
+        return busService;
     }
 
     public AddSeatView getAddSeatView() {
-        return asv;
+        return addSeatView;
     }
 
     public BusScheduleService getBusScheduleService() {
@@ -170,5 +196,17 @@ public class ServiceLocator {
 
     public TripAndScheduleManagementView getTripAndScheduleManagementView() {
         return tripAndScheduleManagementView;
+    }
+
+    public DriverView getDriverView() {
+        return driverView;
+    }
+
+    public BusListView getBusListView() {
+        return busListView;
+    }
+
+    public DriverListView getDriverListView() {
+        return driverListView;
     }
 }

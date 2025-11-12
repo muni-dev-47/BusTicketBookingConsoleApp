@@ -5,6 +5,8 @@ import util.InputUtil;
 import view.auth.authInterfaces.Login;
 import view.auth.authInterfaces.SignUp;
 
+import java.sql.SQLException;
+
 public class AuthView {
     private static AuthView av = null;
 
@@ -19,7 +21,7 @@ public class AuthView {
         return av;
     }
 
-    public void login() {
+    public void login() throws SQLException {
         String[] choices = {"PASSENGER LOGIN", "BUSINESS LOGIN", "ADMIN LOGIN", "BACK"};
         int choice = InputUtil.getMenuChoice("LOGIN PAGE", choices);
         Login login;

@@ -22,4 +22,8 @@ public class BusController {
     public static Bus getbus(long busId) throws SQLException {
         return brs.getBus(busId);
     }
+
+    public static List<Bus> getAllBus(long userId) throws SQLException {
+        return brs.getAllBus(userId);
+    }
 }

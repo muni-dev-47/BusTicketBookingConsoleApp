@@ -11,7 +11,7 @@ public class Bus {
     private String status;
     private double minTurnaroundTimeHours;
 
-    public Bus(long busId, long userId, int totalSeats, String registrationNumber, String busName, String busType, String amenities, String status) {
+    public Bus(long busId, long userId, int totalSeats, String registrationNumber, String busName, String busType, String amenities, double minTurnaroundTimeHours, String status) {
         this.busId = busId;
         this.userId = userId;
         this.totalSeats = totalSeats;
@@ -20,6 +20,7 @@ public class Bus {
         this.busType = busType;
         this.amenities = amenities;
         this.status = status;
+        this.minTurnaroundTimeHours = minTurnaroundTimeHours;
     }
 
     public Bus(String amenities, String busType, String busName, String registrationNumber, int totalSeats, long userId, double minTurnaroundTimeHours) {

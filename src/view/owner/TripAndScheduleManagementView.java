@@ -4,6 +4,8 @@ import config.ServiceLocator;
 import util.InputUtil;
 import view.View;
 
+import java.sql.SQLException;
+
 public class TripAndScheduleManagementView implements View {
     private static TripAndScheduleManagementView tripAndScheduleView;
 
@@ -17,7 +19,7 @@ public class TripAndScheduleManagementView implements View {
     }
 
     @Override
-    public void view() {
+    public void view() throws SQLException {
         while (true) {
             String[] choices = {"📅 CREATE NEW TRIP SCHEDULE (ASSIGN BUS AND TIME)", "📝 VIEW OR MODIFY EXISTING TRIPS", "✖️ CANCEL UPCOMING TRIP", "💵 SET OR UPDATE TICKET FARES", "⬅\uFE0F BACK"};
             int choice = InputUtil.getMenuChoice("\uD83D\uDDFA\uFE0F TRIP & SCHEDULE MANAGEMENT", choices);
@@ -35,3 +37,4 @@ public class TripAndScheduleManagementView implements View {
         }
     }
 }
+

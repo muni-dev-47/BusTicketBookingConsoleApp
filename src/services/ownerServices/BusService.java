@@ -34,6 +34,10 @@ public class BusService {
     }
 
     public Bus getBus(long busId) throws SQLException {
-        return br.findBusByBudId(busId);
+        return br.findBusByBusId(busId);
+    }
+
+    public List<Bus> getAllBus(long userId) throws SQLException {
+        return br.getAllBus(userId);
     }
 }

@@ -12,13 +12,12 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class InputUtil {
+public final class InputUtil {
 
     private InputUtil() {
 
@@ -38,6 +37,10 @@ public class InputUtil {
                 System.out.println("❌ " + errorMessage);
             }
         }
+    }
+
+    public static Scanner getScanner() {
+        return SCANNER;
     }
 
     public static int readValidatedInteger(String prompt, Predicate<Integer> validator, String errorMessage) {
@@ -205,18 +208,16 @@ public class InputUtil {
 
         public static String readAmenities() {
             StringBuilder amenitiesList = new StringBuilder();
-
-            System.out.println("\n--- Bus Amenities Setup (Enter Y for Yes, N for No) ---");
-
+            printHeading("\uD83D\uDE8C  Bus Amenities Setup");
             Function<String, Boolean> readYesNo = (amenityName) -> {
                 while (true) {
-                    System.out.print("Does the bus have " + amenityName + "? (Y/N): ");
+                    System.out.print("👉 Does the bus have " + amenityName + "? (Y/N): ");
                     String input = SCANNER.nextLine();
 
                     if (BusFormValidator.isValidYesNo(input)) {
-                        return input.trim().toUpperCase().equals("Y");
+                        return input.trim().equalsIgnoreCase("Y");
                     } else {
-                        System.out.println("❌ Invalid input. Please enter Y or N.");
+                        System.out.println("❌ Invalid input. Please enter Y or N.\n");
                     }
                 }
             };
@@ -378,17 +379,6 @@ public class InputUtil {
             return InputUtil.readValidatedInput(prompt, RegistrationFormValidator::isValidName, errorMessage);
         }
 
-        public static double readStopDistanceFromOrigin() {
-
-            String prompt = ("📏 Enter Stop Distance from Origin (in Km).");
-
-            Predicate<Double> validator = distance -> distance > 0.0 && distance < Double.MAX_VALUE;
-
-            String errorMessage = ("❌ Invalid Stop Distance. Distance must be greater than 0 km and + lessthen" + Double.MAX_VALUE);
-
-            return InputUtil.readValidatedDouble(prompt, validator, errorMessage);
-        }
-
         public static int readDriverId() {
 
             String prompt = "👨‍✈️ Enter Driver ID to assign (e.g., 101)";
@@ -482,61 +472,6 @@ public class InputUtil {
             return InputUtil.readValidatedInput("🗺️ Enter Boarding/Dropping Point in " + cityName + " (e.g., Central Bus Stand, Toll Plaza):", location -> location.trim().length() >= 5 && location.trim().matches("^[a-zA-Z0-9\\s,-]+$"), errorMessage);
         }
 
-        public static List<RouteStop> getRouteStopInputs(long routeId, String routeOrigin, String routeDestination) {
-
-            List<RouteStop> allRouteStops = new ArrayList<>();
-            int currentStopOrder = 1;
-            String continueInput = "Y";
-
-            {
-                System.out.println("\n--- 📍 Defining STARTING Point (Order " + currentStopOrder + ") ---");
-                System.out.println("City: " + routeOrigin);
-
-                String originLocation = readStopLocation(routeOrigin);
-
-                RouteStop originStop = new RouteStop(routeId, routeOrigin, originLocation, currentStopOrder, 0);
-                allRouteStops.add(originStop);
-                System.out.println("✅ Origin Stop " + routeOrigin + " added (Location: " + originLocation + ")");
-            }
-
-            currentStopOrder++;
-
-            System.out.println("\n=============================================");
-            System.out.println("   📍 Defining Intermediate Route Stops");
-            System.out.println("   (Stops between " + routeOrigin + " and " + routeDestination + ")");
-            System.out.println("=============================================");
-
-            while (continueInput.equalsIgnoreCase("Y")) {
-
-                String cityName = readRouteStopCity();
-                String stopLocation = readStopLocation(cityName);
-                double distanceFromOriginKm = readStopDistanceFromOrigin();
-                if (cityName.equalsIgnoreCase(routeOrigin) || cityName.equalsIgnoreCase(routeDestination)) {
-                    System.out.println("⚠️ Warning: Origin (" + routeOrigin + ") or Destination (" + routeDestination + ") cannot be added as an intermediate stop. Skipping.");
-                    continue;
-                }
-
-                RouteStop stop = new RouteStop(routeId, cityName, stopLocation, currentStopOrder, distanceFromOriginKm);
-                allRouteStops.add(stop);
-
-                System.out.println("✅ Stop " + cityName + " added (Location: " + stopLocation + ") with Order " + currentStopOrder);
-
-                currentStopOrder++;
-
-                continueInput = InputUtil.readValidatedInput("\nDo you want to add another intermediate stop on this route? (Y/N)", s -> s.equalsIgnoreCase("Y") || s.equalsIgnoreCase("N"), "Please enter Y or N.");
-            }
-
-            System.out.println("\n--- 📍 Defining END Point (Order " + currentStopOrder + ") ---");
-            System.out.println("City: " + routeDestination);
-
-            String destinationLocation = readStopLocation(routeDestination);
-            double distanceFromOriginKm = readStopDistanceFromOrigin();
-            RouteStop destinationStop = new RouteStop(routeId, routeDestination, destinationLocation, currentStopOrder, distanceFromOriginKm);
-            allRouteStops.add(destinationStop);
-            System.out.println("✅ Destination Stop " + routeDestination + " added (Location: " + destinationLocation + ")");
-
-            return allRouteStops;
-        }
 
         public static LocalDate readValidDateYYYYMMDD(String promptType) {
 
@@ -564,6 +499,19 @@ public class InputUtil {
             }
             return totalDistance;
         }
+    }
+
+    public static void printHeading(String title) {
+        String divider = "=".repeat(title.length() + 8);
+        System.out.println("\n" + divider);
+        System.out.println("    " + title.toUpperCase() + "    ");
+        System.out.println(divider);
+    }
+
+
+    public static String truncate(String text, int maxLength) {
+        if (text == null) return "";
+        return text.length() > maxLength ? text.substring(0, maxLength - 3) + "..." : text;
     }
 
     @FunctionalInterface

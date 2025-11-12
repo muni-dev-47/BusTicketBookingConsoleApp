@@ -7,6 +7,8 @@ import util.InputUtil;
 import util.PropertyFileHandler;
 import view.auth.authInterfaces.Login;
 
+import java.sql.SQLException;
+
 public class OwnerLoginView implements Login {
     private static OwnerLoginView olv;
 
@@ -22,7 +24,7 @@ public class OwnerLoginView implements Login {
     }
 
     @Override
-    public void login() {
+    public void login() throws SQLException {
         String mobileNumber = InputUtil.UserFormInputUtil.readMobileNumber();
         String password = InputUtil.UserFormInputUtil.readPassword();
         long id;

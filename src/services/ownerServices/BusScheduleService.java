@@ -1,9 +1,7 @@
 package services.ownerServices;
 
 import config.ServiceLocator;
-import models.Route;
-import models.RouteStop;
-import models.Trip;
+import models.*;
 import repository.ownerRepo.BusScheduleRepository;
 
 import java.sql.SQLException;
@@ -23,7 +21,7 @@ public class BusScheduleService {
         return busScheduleService;
     }
 
-    public boolean isRouteAvailable(long ownerId, String originCity, String destinationCity) {
+    public boolean isRouteAvailable(long ownerId, String originCity, String destinationCity) throws SQLException {
         return !busScheduleRepository.findByOriginCityAndDestinationCity(ownerId, originCity, destinationCity);
     }
 
@@ -45,6 +43,22 @@ public class BusScheduleService {
         }
         return true;
     }
+
+    public boolean isBusAvailable(long busId) throws SQLException {
+        return !busScheduleRepository.findBusById(busId);
+    }
+
+    public boolean isDriverAvailable(long driverId) throws SQLException {
+        return !busScheduleRepository.findDriverById(driverId);
+    }
+
+    public void handleAddNewSchedule(Schedule schedule, List<String> days) throws SQLException {
+        for (String day : days) {
+            schedule.setDay(day);
+            busScheduleRepository.saveNewSchedule(schedule);
+        }
+    }
+
 
 //    public long handleAddNewTripSchedule(Trip trip) throws SQLException {
 //        return busScheduleRepository.saveTripSchedule(trip);
